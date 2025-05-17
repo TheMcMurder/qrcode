@@ -109,8 +109,35 @@ cargo build
 
 ```bash
 cd bindings/wasm
-wasm-pack build
+wasm-pack build --target web
 ```
+
+### WebAssembly Package Dependency
+
+> **Note:** The web example depends on the WASM package using a `file:` dependency pointing to the build output (`bindings/wasm/pkg`). This is necessary because the workspace protocol links the source directory, not the build output, and the generated JS/WASM package (with its own `package.json`) lives in `pkg/` after running `wasm-pack build`.
+
+#### Why not `workspace:*`?
+- The workspace protocol (e.g., `"workspace:*"`) links the root of the package, not the `pkg/` directory where the WASM build output lives.
+- The web example needs the generated JS/WASM files and the `package.json` from `pkg/`, so we use a file dependency:  
+  `"@qrcode/wasm": "file:../../bindings/wasm/pkg"`
+
+#### Workflow Steps
+1. **Build the WASM package:**
+   ```bash
+   cd bindings/wasm
+   wasm-pack build --target web
+   ```
+2. **Update dependencies in the web example:**
+   ```bash
+   cd ../../examples/web
+   pnpm install
+   ```
+   This ensures the web example picks up the latest WASM build output.
+
+3. **Run the development server:**
+   ```bash
+   pnpm dev
+   ```
 
 ## Contributing
 
