@@ -26,9 +26,18 @@ async function main() {
     if (!input || !output) {
       console.error('setup failure', !input ? 'input not found' : '', !output ? 'output not found' : "")
     } else {
-      const url = input.value
+    const url = input.value.trim();
+    if (!url) {
+      output.innerHTML = "<em>Please enter a URL.</em>";
+      return;
+    }
+    try {
       const svg = generate_qr_svg(url);
       output.innerHTML = svg;
+    } catch (e) {
+      output.innerHTML = "<em>Failed to generate QR code.</em>";
+      console.error(e);
+    }
     }
   }
 
