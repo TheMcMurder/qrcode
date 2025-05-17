@@ -1,6 +1,0 @@
-
-
-> @qrcode/web-example@1.0.0 build /Users/mcmurdie/Development/personal/qrcode/examples/web
-> tsc && vite build
-
-[41m[30m ELIFECYCLE [39m[49m [31mCommand failed.[39m

@@ -1,6 +1,0 @@
-
-
-> @qrcode/wasm@1.0.0 build /Users/mcmurdie/Development/personal/qrcode/bindings/wasm
-> wasm-pack build --target web
-
-[41m[30m ELIFECYCLE [39m[49m [31mCommand failed.[39m
