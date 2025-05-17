@@ -13,6 +13,9 @@
   "keywords": ["qrcode", "wasm", "rust"],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "@qrcode/wasm": "file:../../bindings/wasm/pkg"
+  },
   "devDependencies": {
     "typescript": "^5.0.0",
     "vite": "^5.0.0",

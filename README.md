@@ -83,6 +83,21 @@ pnpm build --filter=core
 pnpm dev --filter=web-example
 ```
 
+### Development Server
+
+The web example runs on a development server at http://localhost:3000. To start it:
+
+```bash
+cd examples/web
+pnpm dev
+```
+
+The server features:
+- Hot Module Replacement (HMR)
+- Fast refresh for quick development
+- TypeScript support
+- Vite's optimized build process
+
 ### Building the Core Library
 
 ```bash
@@ -95,14 +110,6 @@ cargo build
 ```bash
 cd bindings/wasm
 wasm-pack build
-```
-
-### Running the Web Example
-
-```bash
-cd examples/web
-npm install
-npm run dev
 ```
 
 ## Contributing
