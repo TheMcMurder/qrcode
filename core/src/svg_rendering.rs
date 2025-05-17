@@ -59,6 +59,7 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option
                 match (is_finder, &config.finder_shape, &config.data_shape) {
                     (true, FinderShape::Rounded, _) => {
                         // Render rounded rectangle for dark finder modules
+                        // UNTESTED
                          svg.push_str(&format!(
                             "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black' rx='{r}' ry='{r}'/>\n",
                             x = px,
@@ -86,6 +87,7 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option
                         ));
                     }
                     (true, FinderShape::Triangle, _) => {
+                        // UNTESTED
                         // Render triangle for dark finder modules
                         svg.push_str(&format!(
                             "  <polygon points='{x1},{y1} {x2},{y2} {x3},{y3}' fill='black'/>\n",
@@ -98,6 +100,7 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option
                         ));
                     }
                     (false, _, DataShape::Rounded) => {
+                        // UNTESTED
                         // Render rounded rectangle for dark data modules
                          svg.push_str(&format!(
                             "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black' rx='{r}' ry='{r}'/>\n",
@@ -126,6 +129,7 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option
                         ));
                     }
                     (false, _, DataShape::Triangle) => {
+                        // UNTESTED
                         // Render triangle for dark data modules
                         svg.push_str(&format!(
                             "  <polygon points='{x1},{y1} {x2},{y2} {x3},{y3}' fill='black'/>\n",
