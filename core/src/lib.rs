@@ -83,7 +83,7 @@ mod tests {
 
     #[test]
     fn generates_qr_matrix() {
-        let matrix = generate_qr_matrix();
+        let matrix = generate_qr_matrix("https://jedi.org");
         // The matrix should be square and non-empty
         assert!(!matrix.is_empty());
         let width = matrix.len();
@@ -98,7 +98,7 @@ mod tests {
 
     #[test]
     fn renders_svg() {
-        let matrix = generate_qr_matrix();
+        let matrix = generate_qr_matrix("https://sith.org");
         let svg = render_qr_matrix_as_svg(&matrix);
         // Basic checks: SVG header and some black squares
         assert!(svg.starts_with("<svg"));

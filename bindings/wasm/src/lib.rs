@@ -22,7 +22,7 @@ pub fn hello() -> String {
 }
 
 #[wasm_bindgen]
-pub fn generate_qr_svg() -> String {
-    let matrix = generate_qr_matrix();
+pub fn generate_qr_svg(URL: &str) -> String {
+    let matrix = generate_qr_matrix(URL);
     render_qr_matrix_as_svg(&matrix)
 }
