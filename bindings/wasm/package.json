@@ -10,6 +10,9 @@
   "keywords": ["qrcode", "wasm", "rust"],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "@qrcode/core": "workspace:*"
+  },
   "devDependencies": {
     "wasm-pack": "^0.12.0"
   }

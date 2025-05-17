@@ -16,6 +16,10 @@ importers:
         version: 2.5.3
 
   bindings/wasm:
+    dependencies:
+      '@qrcode/core':
+        specifier: workspace:*
+        version: link:../../core
     devDependencies:
       wasm-pack:
         specifier: ^0.12.0

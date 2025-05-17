@@ -56,8 +56,9 @@ pub fn generate_qr_matrix(data_to_encode: &str) -> Vec<Vec<bool>> {
 
 /// Renders a QR code matrix as an SVG string.
 /// Each module is rendered as a 10x10 pixel square.
-pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], _user_defined_config: Option<&QrRenderConfig>) -> String {
-    // let config= user_defined_config.unwrap_or(&QrRenderConfig::default());
+pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option<&QrRenderConfig>) -> String {
+    let default_config = QrRenderConfig::default();
+    let config = user_defined_config.unwrap_or(&default_config);
     let module_size = 10; // pixels per module
     let width = matrix.len();
     let svg_size = (width * module_size) as u32;
@@ -76,27 +77,76 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], _user_defined_config: Optio
     for (y, row) in matrix.iter().enumerate() {
         for (x, &is_dark) in row.iter().enumerate() {
             // Determine if the current module is part of a finder pattern
+            // Finder patterns are 7x7 squares in the top-left, top-right, and bottom-left corners.
             let is_finder = 
-                // Top-left finder pattern
-                (x < 7 && y < 7) ||
-                // Top-right finder pattern
-                (x >= width - 7 && y < 7) ||
-                // Bottom-left finder pattern
-                (x < 7 && y >= width - 7)
-            ;
+            // Top-left finder pattern
+            (x < 7 && y < 7) ||
+            // Top-right finder pattern
+            (x >= width - 7 && y < 7) ||
+            // Bottom-left finder pattern
+            (x < 7 && y >= width - 7)
+        ;
+            // let is_finder = 
+            //     (x < 7 && y < 7) ||
+            //     (x >= width.saturating_sub(7) && y < 7) ||
+            //     (x < 7 && y >= width.saturating_sub(7))
+            // ;
 
             if is_dark {
                 let px = x * module_size;
                 let py = y * module_size;
-                // Use a different fill color for finder patterns for now
-                let fill_color = if is_finder { "blue" } else { "black" };
-                svg.push_str(&format!(
-                    "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='{fill}'/>\n",
-                    x = px,
-                    y = py,
-                    w = module_size,
-                    fill = fill_color
-                ));
+
+                // Choose shape based on config and module type
+                match (is_finder, &config.finder_shape, &config.data_shape) {
+                    (true, FinderShape::Rounded, _) => {
+                        // Render rounded rectangle for dark finder modules
+                         svg.push_str(&format!(
+                            "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black' rx='{r}' ry='{r}'/>\n",
+                            x = px,
+                            y = py,
+                            w = module_size,
+                            r = module_size / 4 // Radius for rounding
+                        ));
+                    }
+                    (true, FinderShape::Square, _) => {
+                        // Render square for dark finder modules (default if not rounded)
+                        svg.push_str(&format!(
+                            "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black'/>\n",
+                            x = px,
+                            y = py,
+                            w = module_size
+                        ));
+                    }
+                    (false, _, DataShape::Rounded) => {
+                        // Render rounded rectangle for dark data modules
+                         svg.push_str(&format!(
+                            "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black' rx='{r}' ry='{r}'/>\n",
+                            x = px,
+                            y = py,
+                            w = module_size,
+                            r = module_size / 4 // Radius for rounding
+                        ));
+                    }
+                     (false, _, DataShape::Square) => {
+                        // Render square for dark data modules (default if not rounded)
+                         svg.push_str(&format!(
+                            "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black'/>\n",
+                            x = px,
+                            y = py,
+                            w = module_size
+                        ));
+                    }
+                    // Add more cases for other shapes (Circle, Triangle, Custom) as needed
+                    _ => {
+                         // Default case: render square for any other dark module type/shape
+                         svg.push_str(&format!(
+                            "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black'/>\n",
+                            x = px,
+                            y = py,
+                            w = module_size
+                        ));
+                    }
+                }
             }
         }
     }
@@ -149,7 +199,6 @@ mod tests {
         assert!(svg.starts_with("<svg"));
         // Check for both black (data) and blue (finder) modules
         assert!(svg.contains("fill='black'"));
-        assert!(svg.contains("fill='blue'"));
         assert!(svg.ends_with("</svg>\n"));
     }
 }
