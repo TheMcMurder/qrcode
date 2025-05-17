@@ -1,0 +1,15 @@
+{
+  "name": "@qrcode/core",
+  "version": "1.0.0",
+  "description": "Core QR code generation library in Rust",
+  "scripts": {
+    "build": "cargo build --release",
+    "test": "cargo test",
+    "clean": "cargo clean && rm -rf .turbo && rm -rf node_modules",
+    "lint": "cargo clippy",
+    "dev": "cargo watch -x 'run'"
+  },
+  "keywords": ["qrcode", "rust"],
+  "author": "",
+  "license": "MIT"
+} 

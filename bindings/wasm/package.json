@@ -1,0 +1,16 @@
+{
+  "name": "@qrcode/wasm",
+  "version": "1.0.0",
+  "description": "WebAssembly bindings for QR code generation",
+  "type": "module",
+  "scripts": {
+    "build": "wasm-pack build --target web",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf pkg"
+  },
+  "keywords": ["qrcode", "wasm", "rust"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "wasm-pack": "^0.12.0"
+  }
+} 
