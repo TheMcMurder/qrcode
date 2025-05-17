@@ -10,14 +10,14 @@ pub struct QrRenderConfig {
 
 pub enum FinderShape {
     Square,
-    Circle,
+    Dot,
     Rounded,
     Triangle
 }
 
 pub enum DataShape {
     Square,
-    Circle,
+    Dot,
     Rounded,
     Triange
 }
@@ -117,6 +117,16 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option
                             w = module_size
                         ));
                     }
+                    (true, FinderShape::Dot, _) => {
+                        // the radius is half of the normal width
+                        let radius = module_size / 2;
+                        svg.push_str(&format!(
+                            "  <circle cx='{x}' cy='{y}' r='{r}' fill='green'/>\n",
+                            x = px + radius,
+                            y = py + radius,
+                            r = radius
+                        ));
+                    }
                     (false, _, DataShape::Rounded) => {
                         // Render rounded rectangle for dark data modules
                          svg.push_str(&format!(
@@ -157,8 +167,8 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option
 impl Default for QrRenderConfig {
     fn default() -> Self {
         QrRenderConfig {
-            finder_shape: FinderShape::Rounded,
-            data_shape: DataShape::Rounded,
+            finder_shape: FinderShape::Dot,
+            data_shape: DataShape::Square,
         }
     }
 }
