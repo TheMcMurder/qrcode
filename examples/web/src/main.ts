@@ -1,4 +1,4 @@
-import init, { hello } from '@qrcode/wasm';
+import init, { hello, generate_qr_svg } from '@qrcode/wasm';
 
 async function main() {
   // Initialize the WASM module
@@ -12,6 +12,7 @@ async function main() {
     <div>
       <h1>QR Code Generator</h1>
       <p>${message}</p>
+      ${generate_qr_svg()}
     </div>
   `;
 }

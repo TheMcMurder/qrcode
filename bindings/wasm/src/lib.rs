@@ -1,5 +1,5 @@
 use wasm_bindgen::prelude::*;
-use qrcode_core;
+use qrcode_core::{generate_qr_matrix, render_qr_matrix_as_svg};
 
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
@@ -19,4 +19,10 @@ mod tests {
 #[wasm_bindgen]
 pub fn hello() -> String {
     qrcode_core::hello()
+}
+
+#[wasm_bindgen]
+pub fn generate_qr_svg() -> String {
+    let matrix = generate_qr_matrix();
+    render_qr_matrix_as_svg(&matrix)
 }
