@@ -17,9 +17,11 @@ coverage
 
 # Turbo
 .turbo
+**/*/.turbo
 
 # rust
 /target
+**/target
 **/*.rs.bk
 Cargo.lock
 bin/
