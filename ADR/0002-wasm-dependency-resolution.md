@@ -1,4 +1,4 @@
-# ADR 0001: WASM Dependency Resolution in Monorepo
+# ADR 0002: WASM Dependency Resolution in Monorepo
 
 ## Status
 Accepted
