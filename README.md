@@ -33,6 +33,22 @@ qrcode/
 └── docs/              # Documentation
 ```
 
+## Build System
+
+This project uses [Turborepo](https://turbo.build/repo) to manage the build pipeline and dependencies between packages. Turborepo helps us:
+
+- Manage dependencies between Rust and JavaScript/TypeScript packages
+- Cache build outputs for faster subsequent builds
+- Run builds in parallel where possible
+- Maintain consistent build environments
+
+### Key Concepts
+
+- **Workspaces**: The project is organized into workspaces (core, bindings, examples)
+- **Pipeline**: Defined in `turbo.json`, orchestrates the build process
+- **Caching**: Build outputs are cached to speed up development
+- **Dependencies**: Automatic handling of workspace dependencies
+
 ## Development Setup
 
 ### Prerequisites
@@ -40,6 +56,32 @@ qrcode/
 - Rust (latest stable)
 - Node.js (latest LTS)
 - wasm-pack (for WebAssembly builds)
+- pnpm (recommended) or npm
+
+### Initial Setup
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build all packages
+pnpm build
+
+# Run development environment
+pnpm dev
+```
+
+### Individual Package Development
+
+You can work on specific packages using Turborepo's filtering:
+
+```bash
+# Build only the core library
+pnpm build --filter=core
+
+# Build and watch the web example
+pnpm dev --filter=web-example
+```
 
 ### Building the Core Library
 
@@ -62,6 +104,10 @@ cd examples/web
 npm install
 npm run dev
 ```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 
