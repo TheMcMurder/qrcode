@@ -2,8 +2,10 @@
 name = "qrcode-core"
 version = "0.1.0"
 edition = "2021"
-description = "Core QR code generation library"
-license = "MIT"
+
+[lib]
+name = "qrcode_core"
+path = "src/lib.rs"
 
 [dependencies]
 qrcode = "0.12"
