@@ -18,33 +18,22 @@ pub enum DataShape {
     Triangle
 }
 
-pub enum FinderPosition {
-    TopLeft,
-    TopRight,
-    BottomLeft
-}
-
 /// Renders a finder pattern module as SVG
-fn render_finder_module(position: FinderPosition, module_size: usize, _shape: &FinderShape) -> String {
-    // Calculate base position based on finder pattern position
-    let (base_x, base_y) = match position {
-        FinderPosition::TopLeft => (0, 0),
-        FinderPosition::TopRight => (7, 0),
-        FinderPosition::BottomLeft => (0, 7),
-    };
-    
+fn render_finder_module(x_px: usize, y_px: usize, module_size: usize, shape: &FinderShape) -> String {
     // Create a group for the finder pattern
-    let group = format!(
-        r#"  <g transform="translate({x}, {y})">
-    <rect width="{size}" height="{size}" fill="red"/>
-  </g>
-"#,
-        x = base_x * module_size,
-        y = base_y * module_size,
-        size = 7 * module_size
-    );
-    
-    group
+    match shape {
+        FinderShape::Square | FinderShape::Rounded | FinderShape::Dot | FinderShape::Triangle => {
+            format!(
+                r#"  <g transform="translate({x}, {y})">
+                        <rect width="{size}" height="{size}" fill="rebeccapurple"/>
+                    </g>
+                "#,
+                x = x_px,
+                y = y_px,
+                size = 7 * module_size // The finder pattern is 7x7 modules
+            )
+        }
+    }
 }
 
 /// Renders a data module as SVG
@@ -98,12 +87,9 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option
     let default_config = QrRenderConfig::default();
     let config = user_defined_config.unwrap_or(&default_config);
     let module_size = 10; // pixels per module
-    let width = matrix.len();
-    let svg_size = width * module_size;
+    let width = matrix.len(); // width in modules
+    let svg_size = width * module_size; // total size in pixels
     let mut svg = String::new();
-    let mut rendered_top_left = false;
-    let mut rendered_top_right = false;
-    let mut rendered_bottom_left = false;
     
     // SVG header
     svg.push_str(&format!(
@@ -117,35 +103,24 @@ pub fn render_qr_matrix_as_svg(matrix: &[Vec<bool>], user_defined_config: Option
         size = svg_size
     ));
     
-    // Draw modules
+    // Render finder patterns (7x7 modules each)
+    let finder_pattern_size_px = 7 * module_size;
+    svg.push_str(&render_finder_module(0, 0, module_size, &config.finder_shape)); // Top-left
+    svg.push_str(&render_finder_module(svg_size - finder_pattern_size_px, 0, module_size, &config.finder_shape)); // Top-right
+    svg.push_str(&render_finder_module(0, svg_size - finder_pattern_size_px, module_size, &config.finder_shape)); // Bottom-left
+    
+    // Draw data modules
     for (y, row) in matrix.iter().enumerate() {
         for (x, &is_dark) in row.iter().enumerate() {
-            if is_dark {
-                // Determine if the current module is part of a finder pattern
-                let is_top_left_finder_pattern: bool = x < 7 && y < 7;
-                let is_top_right_finder_pattern: bool = x >= width - 7 && y < 7;
-                let bottom_left_finder_pattern: bool = x < 7 && y >= width - 7;
-                if is_top_left_finder_pattern {
-                    // we only want to render the finder pattern once
-                    if !rendered_top_left {
-                        svg.push_str(&render_finder_module(FinderPosition::TopLeft, module_size, &config.finder_shape));
-                        rendered_top_left = true;
-                    }
-                } else if is_top_right_finder_pattern {
-                    // we only want to render the finder pattern once
-                    if !rendered_top_right {
-                        svg.push_str(&render_finder_module(FinderPosition::TopRight, module_size, &config.finder_shape));
-                        rendered_top_right = true;
-                    }
-                } else if bottom_left_finder_pattern {
-                    // we only want to render the finder pattern once
-                    if !rendered_bottom_left {
-                        svg.push_str(&render_finder_module(FinderPosition::BottomLeft, module_size, &config.finder_shape));
-                        rendered_bottom_left = true;
-                    }
-                } else {
-                    svg.push_str(&render_data_module(x, y, module_size, &config.data_shape));
-                }
+            // Determine if the current module is part of a finder pattern
+            let is_finder = 
+                (x < 7 && y < 7) ||
+                (x >= width - 7 && y < 7) ||
+                (x < 7 && y >= width - 7);
+
+            // Only render dark data modules
+            if is_dark && !is_finder {
+                 svg.push_str(&render_data_module(x, y, module_size, &config.data_shape));
             }
         }
     }
