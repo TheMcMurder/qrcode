@@ -22,15 +22,29 @@ pub enum DataShape {
 fn render_finder_module(x_px: usize, y_px: usize, module_size: usize, shape: &FinderShape) -> String {
     // Create a group for the finder pattern
     match shape {
-        FinderShape::Square | FinderShape::Rounded | FinderShape::Dot | FinderShape::Triangle => {
+        // The standard finder pattern shape is the same regardless of the configured FinderShape
+        FinderShape::Square | FinderShape::Dot | FinderShape::Rounded | FinderShape::Triangle => {
             format!(
                 r#"  <g transform="translate({x}, {y})">
-                        <rect width="{size}" height="{size}" fill="rebeccapurple"/>
-                    </g>
-                "#,
+    <rect width="{outer_bar_width}" height="{outer_bar_thickness}" fill="black"/>
+    <rect y="{bottom_bar_y}" width="{outer_bar_width}" height="{outer_bar_thickness}" fill="black"/>
+    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="black" x="{left_bar_x}" y="{left_bar_y}"/>
+    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="black" x="{right_bar_x}" y="{right_bar_y}"/>
+    <rect x="{inner_pos}" y="{inner_pos}" width="{inner_size}" height="{inner_size}" fill="black"/>
+  </g>
+"#,
                 x = x_px,
                 y = y_px,
-                size = 7 * module_size // The finder pattern is 7x7 modules
+                outer_bar_thickness = module_size, // 1 module thickness
+                outer_bar_width = 7 * module_size, // 7 modules wide
+                outer_bar_height = 5 * module_size, // 5 modules tall (7 total - 1 top - 1 bottom)
+                bottom_bar_y = 6 * module_size, // Starts at module row 6
+                left_bar_x = 0, // Starts at module col 0
+                left_bar_y = 1 * module_size, // Starts at module row 1
+                right_bar_x = 6 * module_size, // Starts at module col 6
+                right_bar_y = 1 * module_size, // Starts at module row 1
+                inner_size = 3 * module_size, // 3x3 modules for the innermost black square
+                inner_pos = 2 * module_size // Offset by 2 modules
             )
         }
     }
