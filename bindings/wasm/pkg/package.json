@@ -1,0 +1,16 @@
+{
+  "name": "qrcode-wasm",
+  "description": "WebAssembly bindings for QR code generation",
+  "version": "0.1.0",
+  "license": "MIT",
+  "files": [
+    "qrcode_wasm_bg.wasm",
+    "qrcode_wasm.js",
+    "qrcode_wasm.d.ts"
+  ],
+  "module": "qrcode_wasm.js",
+  "types": "qrcode_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
