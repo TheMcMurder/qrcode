@@ -4,7 +4,14 @@ use console_log;
 pub struct QrRenderConfig {
     pub finder_shape: FinderShape,
     pub data_shape: DataShape,
-    pub finder_styling: FinderStyle
+    pub finder_styling: FinderStyle,
+    pub data_styling: DataStyle
+}
+
+pub enum DataStyle {
+    /// Color specification for the finder pattern
+    /// Can be any valid SVG color (named color, hex code, or rgb value)
+    Color(String)
 }
 
 pub enum FinderStyle {
@@ -72,34 +79,41 @@ fn render_finder_module(
 }
 
 /// Renders a data module as SVG
-fn render_data_module(x: usize, y: usize, module_size: usize, shape: &DataShape) -> String {
+fn render_data_module(x: usize, y: usize, module_size: usize, shape: &DataShape, style: &DataStyle) -> String {
     let px = x * module_size;
     let py = y * module_size;
+    // Get the color from the style
+    let color = match style {
+        DataStyle::Color(c) => c,
+    };
 
     match shape {
         DataShape::Rounded => {
             format!(
-                "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black' rx='{r}' ry='{r}'/>\n",
+                "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='{color}' rx='{r}' ry='{r}'/>\n",
                 x = px,
                 y = py,
                 w = module_size,
-                r = module_size / 4
+                r = module_size / 4,
+                color = color
             )
         }
         DataShape::Square => {
             format!(
-                "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='black'/>\n",
+                "  <rect x='{x}' y='{y}' width='{w}' height='{w}' fill='{color}'/>\n",
                 x = px,
                 y = py,
-                w = module_size
+                w = module_size,
+                color = color
             )
         }
         DataShape::Dot => {
             format!(
-                "  <circle cx='{cx}' cy='{cy}' r='{r}' fill='black'/>\n",
+                "  <circle cx='{cx}' cy='{cy}' r='{r}' fill='{color}'/>\n",
                 cx = px + module_size / 2,
                 cy = py + module_size / 2,
-                r = module_size / 2
+                r = module_size / 2,
+                color = color
             )
         }
         DataShape::Triangle => {
@@ -180,7 +194,7 @@ pub fn render_qr_matrix_as_svg(
 
             // Only render dark data modules
             if is_dark && !is_finder {
-                svg.push_str(&render_data_module(x, y, module_size, &config.data_shape));
+                svg.push_str(&render_data_module(x, y, module_size, &config.data_shape, &config.data_styling));
             }
         }
     }
@@ -195,7 +209,8 @@ impl Default for QrRenderConfig {
         QrRenderConfig {
             finder_shape: FinderShape::Square,
             data_shape: DataShape::Dot,
-            finder_styling: FinderStyle::Color("red".to_string())
+            finder_styling: FinderStyle::Color("red".to_string()),
+            data_styling: DataStyle::Color(("red").to_string())
         }
     }
 }
