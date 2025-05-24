@@ -1,7 +1,16 @@
+use log::info;
+use console_log;
 /// configuration for QR code rendering
 pub struct QrRenderConfig {
     pub finder_shape: FinderShape,
     pub data_shape: DataShape,
+    pub finder_styling: FinderStyle
+}
+
+pub enum FinderStyle {
+    /// Color specification for the finder pattern
+    /// Can be any valid SVG color (named color, hex code, or rgb value)
+    Color(String)
 }
 
 pub enum FinderShape {
@@ -24,22 +33,29 @@ fn render_finder_module(
     y_px: usize,
     module_size: usize,
     shape: &FinderShape,
+    style: &FinderStyle,
 ) -> String {
+    // Get the color from the style
+    let color = match style {
+        FinderStyle::Color(c) => c,
+    };
+    
     // Create a group for the finder pattern
     match shape {
         // The standard finder pattern shape is the same regardless of the configured FinderShape
         FinderShape::Square | FinderShape::Dot | FinderShape::Rounded | FinderShape::Triangle => {
             format!(
                 r#"  <g transform="translate({x}, {y})">
-                    <rect width="{outer_bar_width}" height="{outer_bar_thickness}" fill="blue"/>
-                    <rect y="{bottom_bar_y}" width="{outer_bar_width}" height="{outer_bar_thickness}" fill="green"/>
-                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="red" x="{left_bar_x}" y="{left_bar_y}"/>
-                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="yellow" x="{right_bar_x}" y="{right_bar_y}"/>
-                    <rect x="{inner_pos}" y="{inner_pos}" width="{inner_size}" height="{inner_size}" fill="purple"/>
+                    <rect width="{outer_bar_width}" height="{outer_bar_thickness}" fill="{color}"/>
+                    <rect y="{bottom_bar_y}" width="{outer_bar_width}" height="{outer_bar_thickness}" fill="{color}"/>
+                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="{color}" x="{left_bar_x}" y="{left_bar_y}"/>
+                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="{color}" x="{right_bar_x}" y="{right_bar_y}"/>
+                    <rect x="{inner_pos}" y="{inner_pos}" width="{inner_size}" height="{inner_size}" fill="{color}"/>
                 </g>
 "#,
                 x = x_px,
                 y = y_px,
+                color = color,
                 outer_bar_thickness = module_size, // 1 module thickness
                 outer_bar_width = 7 * module_size, // 7 modules wide
                 outer_bar_height = 5 * module_size, // 5 modules tall (7 total - 1 top - 1 bottom)
@@ -106,11 +122,17 @@ pub fn render_qr_matrix_as_svg(
     matrix: &[Vec<bool>],
     user_defined_config: Option<&QrRenderConfig>,
 ) -> String {
+    // Initialize the console logger if it hasn't been initialized yet
+    // console_log::init_with_level(log::Level::Info).expect("Failed to initialize console logger");
+    
+    info!("Starting QR code SVG rendering");
     let default_config = QrRenderConfig::default();
     let config = user_defined_config.unwrap_or(&default_config);
     let module_size = 10; // pixels per module
     let width = matrix.len(); // width in modules
     let svg_size = width * module_size; // total size in pixels
+    info!("Rendering QR code with size {}x{} modules ({}x{} pixels)", width, width, svg_size, svg_size);
+    
     let mut svg = String::new();
 
     // SVG header
@@ -132,18 +154,21 @@ pub fn render_qr_matrix_as_svg(
         0,
         module_size,
         &config.finder_shape,
+        &config.finder_styling,
     )); // Top-left
     svg.push_str(&render_finder_module(
         svg_size - finder_pattern_size_px,
         0,
         module_size,
         &config.finder_shape,
+        &config.finder_styling,
     )); // Top-right
     svg.push_str(&render_finder_module(
         0,
         svg_size - finder_pattern_size_px,
         module_size,
         &config.finder_shape,
+        &config.finder_styling,
     )); // Bottom-left
 
     // Draw data modules
@@ -161,6 +186,7 @@ pub fn render_qr_matrix_as_svg(
     }
 
     svg.push_str("</svg>\n");
+    info!("Completed QR code SVG rendering");
     svg
 }
 
@@ -169,6 +195,7 @@ impl Default for QrRenderConfig {
         QrRenderConfig {
             finder_shape: FinderShape::Square,
             data_shape: DataShape::Dot,
+            finder_styling: FinderStyle::Color("yellow".to_string())
         }
     }
 }
