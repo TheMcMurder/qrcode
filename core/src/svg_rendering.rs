@@ -31,11 +31,11 @@ fn render_finder_module(
         FinderShape::Square | FinderShape::Dot | FinderShape::Rounded | FinderShape::Triangle => {
             format!(
                 r#"  <g transform="translate({x}, {y})">
-                    <rect width="{outer_bar_width}" height="{outer_bar_thickness}" fill="black"/>
-                    <rect y="{bottom_bar_y}" width="{outer_bar_width}" height="{outer_bar_thickness}" fill="black"/>
-                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="black" x="{left_bar_x}" y="{left_bar_y}"/>
-                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="black" x="{right_bar_x}" y="{right_bar_y}"/>
-                    <rect x="{inner_pos}" y="{inner_pos}" width="{inner_size}" height="{inner_size}" fill="black"/>
+                    <rect width="{outer_bar_width}" height="{outer_bar_thickness}" fill="blue"/>
+                    <rect y="{bottom_bar_y}" width="{outer_bar_width}" height="{outer_bar_thickness}" fill="green"/>
+                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="red" x="{left_bar_x}" y="{left_bar_y}"/>
+                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="yellow" x="{right_bar_x}" y="{right_bar_y}"/>
+                    <rect x="{inner_pos}" y="{inner_pos}" width="{inner_size}" height="{inner_size}" fill="purple"/>
                 </g>
 "#,
                 x = x_px,
