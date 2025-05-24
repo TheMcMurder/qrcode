@@ -1,18 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
 export function hello(): string;
-export function generate_qr_svg(url: string): string;
+/**
+ * Renders a QR code as SVG and returns the result as a string
+ */
+export function render_qr_svg(url: string): string;
+/**
+ * Renders a QR code as PNG and returns the result as a Uint8Array
+ */
+export function render_qr_png(url: string, size: number): Uint8Array;
+/**
+ * Renders a QR code as JPEG and returns the result as a Uint8Array
+ */
+export function render_qr_jpeg(url: string, size: number): Uint8Array;
+/**
+ * Returns the dimensions of a QR code for a given URL
+ */
+export function get_qr_dimensions(url: string): Uint32Array;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly hello: () => [number, number];
-  readonly generate_qr_svg: (a: number, b: number) => [number, number];
+  readonly render_qr_svg: (a: number, b: number) => [number, number];
+  readonly render_qr_png: (a: number, b: number, c: number) => [number, number, number, number];
+  readonly render_qr_jpeg: (a: number, b: number, c: number) => [number, number, number, number];
+  readonly get_qr_dimensions: (a: number, b: number) => [number, number];
   readonly __wbindgen_export_0: WebAssembly.Table;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+  readonly __externref_table_dealloc: (a: number) => void;
   readonly __wbindgen_start: () => void;
 }
 

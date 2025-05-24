@@ -1,4 +1,4 @@
-import init, { hello, generate_qr_svg } from "@qrcode/wasm";
+import init, { hello, render_qr_svg } from "@qrcode/wasm";
 
 async function main() {
   // Initialize the WASM module
@@ -42,7 +42,7 @@ async function main() {
         return;
       }
       try {
-        const svg = generate_qr_svg(url);
+        const svg = render_qr_svg(url);
         output.innerHTML = svg;
       } catch (e) {
         output.innerHTML = "<em>Failed to generate QR code.</em>";

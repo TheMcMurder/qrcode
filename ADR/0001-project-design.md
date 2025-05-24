@@ -26,8 +26,12 @@ This project aims to provide a high-performance, cross-platform QR code generato
   - Turborepo manages build pipelines, caching, and workspace dependencies, improving developer experience and CI efficiency.
 
 - **Web Example:**
+
   - A web example (`examples/web`) demonstrates how to consume the WASM package in a modern frontend stack (Vite + TypeScript).
   - This serves as both a reference implementation and a testbed for integration.
+
+- **Future Bindings:**
+  - We plan to support Android and iOS with future bindings as well.
 
 ## Consequences
 
