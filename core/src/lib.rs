@@ -2,13 +2,12 @@ pub fn add(left: u64, right: u64) -> u64 {
     left + right
 }
 
-
 pub fn hello() -> String {
     "Hello from Rust!".to_string()
 }
 
 mod svg_rendering;
-pub use svg_rendering::{render_qr_matrix_as_svg, QrRenderConfig, FinderShape, DataShape};
+pub use svg_rendering::{render_qr_matrix_as_svg, DataShape, FinderShape, QrRenderConfig};
 
 // Generates a QR code matrix for input data (https://google.com)
 // Returns a 2D vector of booleans, where true = dark module, false = light module
