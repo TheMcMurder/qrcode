@@ -214,7 +214,7 @@ impl Default for QrRenderConfig {
         QrRenderConfig {
             finder_shape: FinderShape::Square,
             data_shape: DataShape::Dot,
-            finder_styling: FinderStyle::Color("red".to_string()),
+            finder_styling: FinderStyle::Color("green".to_string()),
             data_styling: DataStyle::Color(("red").to_string())
         }
     }
