@@ -30,8 +30,8 @@ importers:
   examples/web:
     dependencies:
       '@qrcode/wasm':
-        specifier: file:../../bindings/wasm/pkg
-        version: file:bindings/wasm/pkg
+        specifier: workspace:*
+        version: link:../../bindings/wasm
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -1646,9 +1646,3 @@ packages:
   /yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
-
-  file:bindings/wasm/pkg:
-    resolution: {directory: bindings/wasm/pkg, type: directory}
-    name: qrcode-wasm
-    version: 0.1.0
-    dev: false

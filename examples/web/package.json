@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@qrcode/wasm": "file:../../bindings/wasm/pkg"
+    "@qrcode/wasm": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

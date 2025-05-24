@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "WebAssembly bindings for QR code generation",
   "type": "module",
+  "main": "pkg/qrcode_wasm.js",
+  "types": "pkg/qrcode_wasm.d.ts",
+  "files": [
+    "pkg"
+  ],
   "scripts": {
     "build": "wasm-pack build --target web",
     "format": "cargo fmt",
