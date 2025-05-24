@@ -52,6 +52,7 @@ This project uses [Turborepo](https://turbo.build/repo) to manage the build pipe
 ## Quick Start
 
 ### Prerequisites
+
 - Rust (latest stable)
 - Node.js (latest LTS)
 - wasm-pack
@@ -83,6 +84,7 @@ pnpm install
 ```
 
 #### Why do we need to run install after build?
+
 see [WASM DEPENDENCY RESOLUTION](./ADR/0002-wasm-dependency-resolution.md).
 
 ---
@@ -135,6 +137,7 @@ pnpm dev
 ```
 
 The server features:
+
 - Hot Module Replacement (HMR)
 - Fast refresh for quick development
 - TypeScript support
@@ -160,4 +163,4 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## License
 
-MIT 
+MIT

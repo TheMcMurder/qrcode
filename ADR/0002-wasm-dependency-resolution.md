@@ -1,6 +1,7 @@
 # ADR 0002: WASM Dependency Resolution in Monorepo
 
 ## Status
+
 Accepted
 
 ## Context
@@ -27,4 +28,4 @@ After every `wasm-pack build`, we will run `pnpm install` in `examples/web` to u
 
 - Update `examples/web/package.json` to use the file dependency for `@qrcode/wasm`.
 - Document the workflow: after building WASM, always run `pnpm install` in the web example.
-- (Optional) Automate this with a script or Turborepo pipeline step. 
+- (Optional) Automate this with a script or Turborepo pipeline step.

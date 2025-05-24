@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "wasm-pack build --target web",
+    "format": "cargo fmt",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf pkg"
   },
   "keywords": ["qrcode", "wasm", "rust"],

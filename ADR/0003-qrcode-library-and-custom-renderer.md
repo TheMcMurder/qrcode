@@ -1,6 +1,7 @@
 # ADR 0003: Use of Existing QR Code Library with Custom Renderer
 
 ## Status
+
 Accepted
 
 ## Context
@@ -30,5 +31,6 @@ For rendering, we build our own parser and renderer on top of the matrix provide
 - **Using the library's built-in renderers:** Rejected because they do not support advanced visual features (e.g., gradients, rounded corners).
 
 ## References
+
 - [qrcode crate documentation](https://docs.rs/qrcode/)
-- See also: [ADR 0001 - Project Design and Architecture](./0001-project-design.md) 
+- See also: [ADR 0001 - Project Design and Architecture](./0001-project-design.md)
