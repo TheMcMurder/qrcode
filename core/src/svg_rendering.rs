@@ -3,7 +3,6 @@ use console_log;
 use std::sync::Once;
 
 static INIT_LOGGER: Once = Once::new();
-
 /// configuration for QR code rendering
 pub struct QrRenderConfig {
     pub finder_shape: FinderShape,
@@ -215,7 +214,7 @@ impl Default for QrRenderConfig {
         QrRenderConfig {
             finder_shape: FinderShape::Square,
             data_shape: DataShape::Dot,
-            finder_styling: FinderStyle::Color("orange".to_string()),
+            finder_styling: FinderStyle::Color("red".to_string()),
             data_styling: DataStyle::Color(("red").to_string())
         }
     }
