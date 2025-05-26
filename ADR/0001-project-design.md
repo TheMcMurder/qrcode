@@ -15,6 +15,15 @@ This project aims to provide a high-performance, cross-platform QR code generato
   - The core QR code generation logic is implemented in Rust for maximum performance, safety, and portability.
   - Rust's ecosystem enables robust testing, error handling, and future extensibility (e.g., supporting more output formats).
 
+- **Cross-Platform Support:**
+
+  - The library is designed to work seamlessly across multiple platforms:
+    - Web: Through WebAssembly bindings
+    - iOS: Through native bindings
+    - Android: Through native bindings
+    - Backend: Through REST API endpoints
+  - Each platform will have its own dedicated package in the monorepo for optimal integration.
+
 - **WebAssembly Bindings:**
 
   - WebAssembly bindings are provided via a dedicated package (`bindings/wasm`) using `wasm-pack` and `wasm-bindgen`.
@@ -30,8 +39,9 @@ This project aims to provide a high-performance, cross-platform QR code generato
   - A web example (`examples/web`) demonstrates how to consume the WASM package in a modern frontend stack (Vite + TypeScript).
   - This serves as both a reference implementation and a testbed for integration.
 
-- **Future Bindings:**
-  - We plan to support Android and iOS with future bindings as well.
+- **Platform-Specific Examples:**
+  - Examples will be provided for each supported platform (iOS, Android, Web, Backend) to demonstrate integration patterns.
+  - Each example will follow platform-specific best practices and conventions.
 
 ## Consequences
 
