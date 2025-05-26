@@ -88,23 +88,39 @@ function passStringToWasm0(arg, malloc, realloc) {
     WASM_VECTOR_LEN = offset;
     return ptr;
 }
+
+function isLikeNone(x) {
+    return x === undefined || x === null;
+}
+
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
+}
 /**
  * Renders a QR code as SVG and returns the result as a string
  * @param {string} url
+ * @param {QrConfig | null} [config]
  * @returns {string}
  */
-export function render_qr_svg(url) {
-    let deferred2_0;
-    let deferred2_1;
+export function render_qr_svg(url, config) {
+    let deferred3_0;
+    let deferred3_1;
     try {
         const ptr0 = passStringToWasm0(url, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.render_qr_svg(ptr0, len0);
-        deferred2_0 = ret[0];
-        deferred2_1 = ret[1];
+        let ptr1 = 0;
+        if (!isLikeNone(config)) {
+            _assertClass(config, QrConfig);
+            ptr1 = config.__destroy_into_raw();
+        }
+        const ret = wasm.render_qr_svg(ptr0, len0, ptr1);
+        deferred3_0 = ret[0];
+        deferred3_1 = ret[1];
         return getStringFromWasm0(ret[0], ret[1]);
     } finally {
-        wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
+        wasm.__wbindgen_free(deferred3_0, deferred3_1, 1);
     }
 }
 
@@ -122,36 +138,48 @@ function getArrayU8FromWasm0(ptr, len) {
  * Renders a QR code as PNG and returns the result as a Uint8Array
  * @param {string} url
  * @param {number} size
+ * @param {QrConfig | null} [config]
  * @returns {Uint8Array}
  */
-export function render_qr_png(url, size) {
+export function render_qr_png(url, size, config) {
     const ptr0 = passStringToWasm0(url, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.render_qr_png(ptr0, len0, size);
+    let ptr1 = 0;
+    if (!isLikeNone(config)) {
+        _assertClass(config, QrConfig);
+        ptr1 = config.__destroy_into_raw();
+    }
+    const ret = wasm.render_qr_png(ptr0, len0, size, ptr1);
     if (ret[3]) {
         throw takeFromExternrefTable0(ret[2]);
     }
-    var v2 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
+    var v3 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
     wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-    return v2;
+    return v3;
 }
 
 /**
  * Renders a QR code as JPEG and returns the result as a Uint8Array
  * @param {string} url
  * @param {number} size
+ * @param {QrConfig | null} [config]
  * @returns {Uint8Array}
  */
-export function render_qr_jpeg(url, size) {
+export function render_qr_jpeg(url, size, config) {
     const ptr0 = passStringToWasm0(url, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.render_qr_jpeg(ptr0, len0, size);
+    let ptr1 = 0;
+    if (!isLikeNone(config)) {
+        _assertClass(config, QrConfig);
+        ptr1 = config.__destroy_into_raw();
+    }
+    const ret = wasm.render_qr_jpeg(ptr0, len0, size, ptr1);
     if (ret[3]) {
         throw takeFromExternrefTable0(ret[2]);
     }
-    var v2 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
+    var v3 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
     wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-    return v2;
+    return v3;
 }
 
 let cachedUint32ArrayMemory0 = null;
@@ -170,15 +198,60 @@ function getArrayU32FromWasm0(ptr, len) {
 /**
  * Returns the dimensions of a QR code for a given URL
  * @param {string} url
+ * @param {QrConfig | null} [config]
  * @returns {Uint32Array}
  */
-export function get_qr_dimensions(url) {
+export function get_qr_dimensions(url, config) {
     const ptr0 = passStringToWasm0(url, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.get_qr_dimensions(ptr0, len0);
-    var v2 = getArrayU32FromWasm0(ret[0], ret[1]).slice();
+    let ptr1 = 0;
+    if (!isLikeNone(config)) {
+        _assertClass(config, QrConfig);
+        ptr1 = config.__destroy_into_raw();
+    }
+    const ret = wasm.get_qr_dimensions(ptr0, len0, ptr1);
+    var v3 = getArrayU32FromWasm0(ret[0], ret[1]).slice();
     wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
-    return v2;
+    return v3;
+}
+
+const QrConfigFinalization = (typeof FinalizationRegistry === 'undefined')
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry(ptr => wasm.__wbg_qrconfig_free(ptr >>> 0, 1));
+
+export class QrConfig {
+
+    __destroy_into_raw() {
+        const ptr = this.__wbg_ptr;
+        this.__wbg_ptr = 0;
+        QrConfigFinalization.unregister(this);
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_qrconfig_free(ptr, 0);
+    }
+    /**
+     * @param {string} finder_shape
+     * @param {string} data_shape
+     * @param {string} finder_color
+     * @param {string} data_color
+     */
+    constructor(finder_shape, data_shape, finder_color, data_color) {
+        const ptr0 = passStringToWasm0(finder_shape, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ptr1 = passStringToWasm0(data_shape, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len1 = WASM_VECTOR_LEN;
+        const ptr2 = passStringToWasm0(finder_color, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len2 = WASM_VECTOR_LEN;
+        const ptr3 = passStringToWasm0(data_color, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len3 = WASM_VECTOR_LEN;
+        const ret = wasm.qrconfig_new(ptr0, len0, ptr1, len1, ptr2, len2, ptr3, len3);
+        this.__wbg_ptr = ret >>> 0;
+        QrConfigFinalization.register(this, this.__wbg_ptr, this);
+        return this;
+    }
 }
 
 async function __wbg_load(module, imports) {

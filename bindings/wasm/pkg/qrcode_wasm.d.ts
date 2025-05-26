@@ -4,29 +4,35 @@ export function hello(): string;
 /**
  * Renders a QR code as SVG and returns the result as a string
  */
-export function render_qr_svg(url: string): string;
+export function render_qr_svg(url: string, config?: QrConfig | null): string;
 /**
  * Renders a QR code as PNG and returns the result as a Uint8Array
  */
-export function render_qr_png(url: string, size: number): Uint8Array;
+export function render_qr_png(url: string, size: number, config?: QrConfig | null): Uint8Array;
 /**
  * Renders a QR code as JPEG and returns the result as a Uint8Array
  */
-export function render_qr_jpeg(url: string, size: number): Uint8Array;
+export function render_qr_jpeg(url: string, size: number, config?: QrConfig | null): Uint8Array;
 /**
  * Returns the dimensions of a QR code for a given URL
  */
-export function get_qr_dimensions(url: string): Uint32Array;
+export function get_qr_dimensions(url: string, config?: QrConfig | null): Uint32Array;
+export class QrConfig {
+  free(): void;
+  constructor(finder_shape: string, data_shape: string, finder_color: string, data_color: string);
+}
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly hello: () => [number, number];
-  readonly render_qr_svg: (a: number, b: number) => [number, number];
-  readonly render_qr_png: (a: number, b: number, c: number) => [number, number, number, number];
-  readonly render_qr_jpeg: (a: number, b: number, c: number) => [number, number, number, number];
-  readonly get_qr_dimensions: (a: number, b: number) => [number, number];
+  readonly __wbg_qrconfig_free: (a: number, b: number) => void;
+  readonly qrconfig_new: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
+  readonly render_qr_svg: (a: number, b: number, c: number) => [number, number];
+  readonly render_qr_png: (a: number, b: number, c: number, d: number) => [number, number, number, number];
+  readonly render_qr_jpeg: (a: number, b: number, c: number, d: number) => [number, number, number, number];
+  readonly get_qr_dimensions: (a: number, b: number, c: number) => [number, number];
   readonly __wbindgen_export_0: WebAssembly.Table;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;

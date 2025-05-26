@@ -3,7 +3,12 @@ use qrcode_core::{
     render_qr_code,
     render_qr_code_svg,
     RasterFormat,
-    QrCodeOutput
+    QrCodeOutput,
+    QrRenderConfig,
+    FinderShape,
+    DataShape,
+    FinderStyle,
+    DataStyle
 };
 
 pub fn add(left: u64, right: u64) -> u64 {
@@ -26,10 +31,57 @@ pub fn hello() -> String {
     qrcode_core::hello()
 }
 
+#[wasm_bindgen]
+pub struct QrConfig {
+    finder_shape: String,
+    data_shape: String,
+    finder_color: String,
+    data_color: String,
+}
+
+#[wasm_bindgen]
+impl QrConfig {
+    #[wasm_bindgen(constructor)]
+    pub fn new(finder_shape: String, data_shape: String, finder_color: String, data_color: String) -> Self {
+        QrConfig {
+            finder_shape,
+            data_shape,
+            finder_color,
+            data_color,
+        }
+    }
+}
+
+fn convert_config(config: &QrConfig) -> QrRenderConfig {
+    let finder_shape = match config.finder_shape.as_str() {
+        "Square" => FinderShape::Square,
+        "Dot" => FinderShape::Dot,
+        "Rounded" => FinderShape::Rounded,
+        "Triangle" => FinderShape::Triangle,
+        _ => FinderShape::Square,
+    };
+
+    let data_shape = match config.data_shape.as_str() {
+        "Square" => DataShape::Square,
+        "Dot" => DataShape::Dot,
+        "Rounded" => DataShape::Rounded,
+        "Triangle" => DataShape::Triangle,
+        _ => DataShape::Dot,
+    };
+
+    QrRenderConfig {
+        finder_shape,
+        data_shape,
+        finder_styling: FinderStyle::Color(config.finder_color.clone()),
+        data_styling: DataStyle::Color(config.data_color.clone()),
+    }
+}
+
 /// Renders a QR code as SVG and returns the result as a string
 #[wasm_bindgen]
-pub fn render_qr_svg(url: &str) -> String {
-    let result = render_qr_code_svg(url, None);
+pub fn render_qr_svg(url: &str, config: Option<QrConfig>) -> String {
+    let qr_config = config.map(|c| convert_config(&c));
+    let result = render_qr_code_svg(url, qr_config.as_ref());
     match result.data {
         QrCodeOutput::Svg(svg) => svg,
         _ => panic!("Expected SVG output"),
@@ -38,8 +90,9 @@ pub fn render_qr_svg(url: &str) -> String {
 
 /// Renders a QR code as PNG and returns the result as a Uint8Array
 #[wasm_bindgen]
-pub fn render_qr_png(url: &str, size: u32) -> Result<Vec<u8>, JsValue> {
-    let result = render_qr_code(url, None, RasterFormat::Png, size)
+pub fn render_qr_png(url: &str, size: u32, config: Option<QrConfig>) -> Result<Vec<u8>, JsValue> {
+    let qr_config = config.map(|c| convert_config(&c));
+    let result = render_qr_code(url, qr_config.as_ref(), RasterFormat::Png, size)
         .map_err(|e| JsValue::from_str(&e.to_string()))?;
     
     match result.data {
@@ -50,8 +103,9 @@ pub fn render_qr_png(url: &str, size: u32) -> Result<Vec<u8>, JsValue> {
 
 /// Renders a QR code as JPEG and returns the result as a Uint8Array
 #[wasm_bindgen]
-pub fn render_qr_jpeg(url: &str, size: u32) -> Result<Vec<u8>, JsValue> {
-    let result = render_qr_code(url, None, RasterFormat::Jpeg, size)
+pub fn render_qr_jpeg(url: &str, size: u32, config: Option<QrConfig>) -> Result<Vec<u8>, JsValue> {
+    let qr_config = config.map(|c| convert_config(&c));
+    let result = render_qr_code(url, qr_config.as_ref(), RasterFormat::Jpeg, size)
         .map_err(|e| JsValue::from_str(&e.to_string()))?;
     
     match result.data {
@@ -62,7 +116,8 @@ pub fn render_qr_jpeg(url: &str, size: u32) -> Result<Vec<u8>, JsValue> {
 
 /// Returns the dimensions of a QR code for a given URL
 #[wasm_bindgen]
-pub fn get_qr_dimensions(url: &str) -> Vec<u32> {
-    let result = render_qr_code_svg(url, None);
+pub fn get_qr_dimensions(url: &str, config: Option<QrConfig>) -> Vec<u32> {
+    let qr_config = config.map(|c| convert_config(&c));
+    let result = render_qr_code_svg(url, qr_config.as_ref());
     vec![result.width, result.height]
 }

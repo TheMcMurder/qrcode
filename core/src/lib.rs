@@ -9,7 +9,7 @@ pub fn hello() -> String {
 mod svg_rendering;
 mod format_conversion;
 
-pub use svg_rendering::{render_qr_matrix_as_svg, DataShape, FinderShape, QrRenderConfig};
+pub use svg_rendering::{render_qr_matrix_as_svg, DataShape, FinderShape, QrRenderConfig, FinderStyle, DataStyle};
 pub use format_conversion::{RasterFormat, FormatConversionError, QrCodeOutput, QrCodeResult};
 
 /// Renders a QR code in the specified format
