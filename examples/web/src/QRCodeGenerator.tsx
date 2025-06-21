@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
-import init, { hello, render_qr_svg, QrConfig } from "@qrcode/wasm";
+import init, { render_qr_svg, QrConfig } from "@qrcode/wasm";
 
 // Feature flags configuration
 const FEATURE_FLAGS = {
@@ -36,8 +36,8 @@ const getAvailableOptions = (type: 'FINDER_SHAPES' | 'DATA_SHAPES') => {
 const defaultConfig: QrRenderConfig = {
   finderShape: getAvailableOptions('FINDER_SHAPES')[0] || 'Square',
   dataShape: getAvailableOptions('DATA_SHAPES')[0] || 'Square',
-  finderColor: 'green',
-  dataColor: 'red'
+  finderColor: '#000000',
+  dataColor: '#000000'
 };
 
 type QrAction = 
@@ -62,7 +62,6 @@ function qrReducer(state: QrRenderConfig, action: QrAction): QrRenderConfig {
 }
 
 export function QRCodeGenerator() {
-  const [message, setMessage] = useState<string>('');
   const [url, setUrl] = useState('https://google.com');
   const [qrCode, setQrCode] = useState<string>('');
   const [config, dispatch] = useReducer(qrReducer, defaultConfig);
@@ -70,7 +69,6 @@ export function QRCodeGenerator() {
   useEffect(() => {
     const initializeWasm = async () => {
       await init();
-      setMessage(hello());
     };
     initializeWasm();
   }, []);
@@ -82,6 +80,8 @@ export function QRCodeGenerator() {
       return;
     }
     try {
+      console.log('finderColor', config.finderColor);
+      console.log('dataColor', config.dataColor);
       const qrConfig = new QrConfig(
         config.finderShape,
         config.dataShape,
@@ -98,8 +98,7 @@ export function QRCodeGenerator() {
 
   return (
     <div>
-      <h1>QR Code Generator</h1>
-      <p>{message}</p>
+      <h1>QR Code Generator - WIP</h1>
       <div>
         <input
           id="qr-input"
