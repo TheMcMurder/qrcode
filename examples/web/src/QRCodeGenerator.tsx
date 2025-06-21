@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
+import { Disclaimer } from './Disclaimer';
 import init, { render_qr_svg, QrConfig } from "@qrcode/wasm";
 
 // Feature flags configuration
@@ -99,6 +100,7 @@ export function QRCodeGenerator() {
   return (
     <div>
       <h1>QR Code Generator - WIP</h1>
+      <Disclaimer />
       <div>
         <input
           id="qr-input"
