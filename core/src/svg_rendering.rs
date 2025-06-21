@@ -55,14 +55,15 @@ fn render_finder_module(
         // The standard finder pattern shape is the same regardless of the configured FinderShape
         FinderShape::Square | FinderShape::Rounded | FinderShape::Triangle => {
             format!(
-                r#"  <g transform="translate({x}, {y})">
-                    <rect width="{outer_bar_width}" height="{outer_bar_thickness}" fill="{color}"/>
-                    <rect y="{bottom_bar_y}" width="{outer_bar_width}" height="{outer_bar_thickness}" fill="{color}"/>
-                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="{color}" x="{left_bar_x}" y="{left_bar_y}"/>
-                    <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="{color}" x="{right_bar_x}" y="{right_bar_y}"/>
-                    <rect x="{inner_pos}" y="{inner_pos}" width="{inner_size}" height="{inner_size}" fill="{color}"/>
-                </g>
-"#,
+                r#"
+                    <g transform="translate({x}, {y})">
+                        <rect width="{outer_bar_width}" height="{outer_bar_thickness}" fill="{color}"/>
+                        <rect y="{bottom_bar_y}" width="{outer_bar_width}" height="{outer_bar_thickness}" fill="{color}"/>
+                        <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="{color}" x="{left_bar_x}" y="{left_bar_y}"/>
+                        <rect width="{outer_bar_thickness}" height="{outer_bar_height}" fill="{color}" x="{right_bar_x}" y="{right_bar_y}"/>
+                        <rect x="{inner_pos}" y="{inner_pos}" width="{inner_size}" height="{inner_size}" fill="{color}"/>
+                    </g>
+                "#,
                 x = x_px,
                 y = y_px,
                 color = color,
@@ -86,10 +87,10 @@ fn render_finder_module(
 
             format!(
                 r#"
-                <g transform="translate({x}, {y})">
-                    <circle cx='{center}' cy='{center}' r='{ring_radius}' fill='none' stroke='{color}' stroke-width='{ring_stroke_width}'/>
-                    <circle cx='{center}' cy='{center}' r='{r_dot}' fill='{color}'/>
-                </g>
+                    <g transform="translate({x}, {y})">
+                        <circle cx='{center}' cy='{center}' r='{ring_radius}' fill='none' stroke='{color}' stroke-width='{ring_stroke_width}'/>
+                        <circle cx='{center}' cy='{center}' r='{r_dot}' fill='{color}'/>
+                    </g>
                 "#,
                 x = x_px,
                 y = y_px,
