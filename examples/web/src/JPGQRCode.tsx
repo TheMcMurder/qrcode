@@ -1,8 +1,8 @@
-import { render_qr_png, QrConfig } from "@qrcode/wasm";
+import { QrConfig, render_qr_jpeg } from "@qrcode/wasm";
 import { useEffect, useState } from "react";
 import { QrRenderConfig } from "./types.js";
 
-export function PNGQRCode({
+export function JPGQRCode({
   url,
   config,
 }: {
@@ -32,7 +32,7 @@ export function PNGQRCode({
         config.finderColor,
         config.dataColor,
       );
-      const png = render_qr_png(trimmedUrl, qrConfig);
+      const png = render_qr_jpeg(trimmedUrl, qrConfig);
       setQrCode(png);
     } catch (e) {
       setError("Failed to generate QR code.");
@@ -42,31 +42,39 @@ export function PNGQRCode({
 
   if (error) {
     return (
-      <div id="qr-output">
-        <em>{error}</em>
-      </div>
+      <>
+        <div id="qr-output">
+          <em>{error}</em>
+        </div>
+      </>
     );
   }
 
   if (!url.trim()) {
     return (
-      <div id="qr-output">
-        <em>Please enter a URL.</em>
-      </div>
+      <>
+        <div id="qr-output">
+          <em>Please enter a URL.</em>
+        </div>
+      </>
     );
   }
 
   if (!qrCode) {
     return (
-      <div id="qr-output">
-        <em>Generating...</em>
-      </div>
+      <>
+        <div id="qr-output">
+          <em>Generating...</em>
+        </div>
+      </>
     );
   }
 
   return (
-    <div id="qr-output">
-      <img src={`data:image/png;base64,${qrCode}`} alt="QR Code PNG" />
-    </div>
+    <>
+      <div id="qr-output">
+        <img src={`data:image/jpeg;base64,${qrCode}`} alt="QR Code JPG" />
+      </div>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import init from "@qrcode/wasm";
 import { QrRenderConfig } from "./types";
 import { SVGQRCode } from "./SVGQRCode";
 import { PNGQRCode } from "./PNGQRCode";
+import { JPGQRCode } from "./JPGQRCode";
 
 // Feature flags configuration
 const FEATURE_FLAGS = {
@@ -158,8 +159,29 @@ export function QRCodeGenerator() {
           </>
         )}
       </div>
-      {isInitialized && <SVGQRCode url={url} config={config} />}
-      {isInitialized && <PNGQRCode url={url} config={config} />}
+      {isInitialized && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1rem",
+            textAlign: "center",
+          }}
+        >
+          <div>
+            <h3>SVG</h3>
+            <SVGQRCode url={url} config={config} />
+          </div>
+          <div>
+            <h3>PNG</h3>
+            <PNGQRCode url={url} config={config} />
+          </div>
+          <div>
+            <h3>JPG</h3>
+            <JPGQRCode url={url} config={config} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
