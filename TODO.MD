@@ -1,5 +1,26 @@
 # Notes for development
 
+## Error handling
+
+Right now there is no real error handling to speak of, it's very rough, this library should provide sensible errors.
+- Maximum size limits
+- WASM memory limits
+- Rust Panic conditions
+
+## Logging hooks
+
+Perhaps we should expose logging hooks so clients can fire logging events
+
+## Performance under load testing
+
+- Metrics capturing the number of requests per second it can handle
+
+## Security
+
+- input validation
+  - Max size
+  - allowed characters
+  - max error correction
 
 
 ## SVG Rendering

@@ -11,6 +11,7 @@ A high-performance, cross-platform QR code generator written in Rust with WebAss
 - Maintain high code quality and comprehensive test coverage
 - Offer a simple, intuitive API for developers
 - HAVE FUN! I'm having fun coding. Maybe this will be ready for production one day, right now it's not.
+- Experiment with AI code assistants.
 
 ## Features
 
@@ -170,7 +171,11 @@ wasm-pack build --target web
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+This project is currently a personal learning experiment for me to explore Rust, WebAssembly, and AI-assisted development. I'm not actively seeking contributions at this time as I'm focused on the learning journey.
+
+If you find this project interesting or have ideas for collaboration in the future, feel free to reach out! I may open it up for contributions once I've learned what I set out to learn and feel ready to collaborate with others.
+
+For now, I'm enjoying the process of building this solo and experimenting with different approaches. Thanks for understanding!
 
 ## License
 
