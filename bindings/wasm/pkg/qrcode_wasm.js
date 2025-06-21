@@ -129,33 +129,37 @@ function takeFromExternrefTable0(idx) {
     wasm.__externref_table_dealloc(idx);
     return value;
 }
-
-function getArrayU8FromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    return getUint8ArrayMemory0().subarray(ptr / 1, ptr / 1 + len);
-}
 /**
  * Renders a QR code as PNG and returns the result as a Uint8Array
  * @param {string} url
  * @param {number} size
  * @param {QrConfig | null} [config]
- * @returns {Uint8Array}
+ * @returns {string}
  */
 export function render_qr_png(url, size, config) {
-    const ptr0 = passStringToWasm0(url, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    let ptr1 = 0;
-    if (!isLikeNone(config)) {
-        _assertClass(config, QrConfig);
-        ptr1 = config.__destroy_into_raw();
+    let deferred4_0;
+    let deferred4_1;
+    try {
+        const ptr0 = passStringToWasm0(url, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        let ptr1 = 0;
+        if (!isLikeNone(config)) {
+            _assertClass(config, QrConfig);
+            ptr1 = config.__destroy_into_raw();
+        }
+        const ret = wasm.render_qr_png(ptr0, len0, size, ptr1);
+        var ptr3 = ret[0];
+        var len3 = ret[1];
+        if (ret[3]) {
+            ptr3 = 0; len3 = 0;
+            throw takeFromExternrefTable0(ret[2]);
+        }
+        deferred4_0 = ptr3;
+        deferred4_1 = len3;
+        return getStringFromWasm0(ptr3, len3);
+    } finally {
+        wasm.__wbindgen_free(deferred4_0, deferred4_1, 1);
     }
-    const ret = wasm.render_qr_png(ptr0, len0, size, ptr1);
-    if (ret[3]) {
-        throw takeFromExternrefTable0(ret[2]);
-    }
-    var v3 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
-    wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-    return v3;
 }
 
 /**
@@ -163,23 +167,32 @@ export function render_qr_png(url, size, config) {
  * @param {string} url
  * @param {number} size
  * @param {QrConfig | null} [config]
- * @returns {Uint8Array}
+ * @returns {string}
  */
 export function render_qr_jpeg(url, size, config) {
-    const ptr0 = passStringToWasm0(url, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    let ptr1 = 0;
-    if (!isLikeNone(config)) {
-        _assertClass(config, QrConfig);
-        ptr1 = config.__destroy_into_raw();
+    let deferred4_0;
+    let deferred4_1;
+    try {
+        const ptr0 = passStringToWasm0(url, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        let ptr1 = 0;
+        if (!isLikeNone(config)) {
+            _assertClass(config, QrConfig);
+            ptr1 = config.__destroy_into_raw();
+        }
+        const ret = wasm.render_qr_jpeg(ptr0, len0, size, ptr1);
+        var ptr3 = ret[0];
+        var len3 = ret[1];
+        if (ret[3]) {
+            ptr3 = 0; len3 = 0;
+            throw takeFromExternrefTable0(ret[2]);
+        }
+        deferred4_0 = ptr3;
+        deferred4_1 = len3;
+        return getStringFromWasm0(ptr3, len3);
+    } finally {
+        wasm.__wbindgen_free(deferred4_0, deferred4_1, 1);
     }
-    const ret = wasm.render_qr_jpeg(ptr0, len0, size, ptr1);
-    if (ret[3]) {
-        throw takeFromExternrefTable0(ret[2]);
-    }
-    var v3 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
-    wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-    return v3;
 }
 
 let cachedUint32ArrayMemory0 = null;

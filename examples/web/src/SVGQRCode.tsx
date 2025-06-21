@@ -37,5 +37,12 @@ export function SVGQRCode({
       console.error(e);
     }
   };
-  return <div id="qr-output" dangerouslySetInnerHTML={{ __html: qrCode }} />;
+  return (
+    <>
+      <div>SVG rendering</div>
+      <div id="qr-output">
+        <div dangerouslySetInnerHTML={{ __html: qrCode }} />
+      </div>
+    </>
+  )
 }

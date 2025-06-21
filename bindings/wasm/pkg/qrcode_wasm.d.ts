@@ -8,11 +8,11 @@ export function render_qr_svg(url: string, config?: QrConfig | null): string;
 /**
  * Renders a QR code as PNG and returns the result as a Uint8Array
  */
-export function render_qr_png(url: string, size: number, config?: QrConfig | null): Uint8Array;
+export function render_qr_png(url: string, size: number, config?: QrConfig | null): string;
 /**
  * Renders a QR code as JPEG and returns the result as a Uint8Array
  */
-export function render_qr_jpeg(url: string, size: number, config?: QrConfig | null): Uint8Array;
+export function render_qr_jpeg(url: string, size: number, config?: QrConfig | null): string;
 /**
  * Returns the dimensions of a QR code for a given URL
  */

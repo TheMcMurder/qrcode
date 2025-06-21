@@ -10,6 +10,7 @@ use qrcode_core::{
     FinderStyle,
     DataStyle
 };
+use base64::{engine::general_purpose, Engine as _};
 
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
@@ -90,26 +91,26 @@ pub fn render_qr_svg(url: &str, config: Option<QrConfig>) -> String {
 
 /// Renders a QR code as PNG and returns the result as a Uint8Array
 #[wasm_bindgen]
-pub fn render_qr_png(url: &str, size: u32, config: Option<QrConfig>) -> Result<Vec<u8>, JsValue> {
+pub fn render_qr_png(url: &str, size: u32, config: Option<QrConfig>) -> Result<String, JsValue> {
     let qr_config = config.map(|c| convert_config(&c));
     let result = render_qr_code(url, qr_config.as_ref(), RasterFormat::Png, size)
         .map_err(|e| JsValue::from_str(&e.to_string()))?;
     
     match result.data {
-        QrCodeOutput::Raster(data, _) => Ok(data),
+        QrCodeOutput::Raster(data, _) => Ok(general_purpose::STANDARD.encode(data)),
         _ => Err(JsValue::from_str("Expected raster output")),
     }
 }
 
 /// Renders a QR code as JPEG and returns the result as a Uint8Array
 #[wasm_bindgen]
-pub fn render_qr_jpeg(url: &str, size: u32, config: Option<QrConfig>) -> Result<Vec<u8>, JsValue> {
+pub fn render_qr_jpeg(url: &str, size: u32, config: Option<QrConfig>) -> Result<String, JsValue> {
     let qr_config = config.map(|c| convert_config(&c));
     let result = render_qr_code(url, qr_config.as_ref(), RasterFormat::Jpeg, size)
         .map_err(|e| JsValue::from_str(&e.to_string()))?;
     
     match result.data {
-        QrCodeOutput::Raster(data, _) => Ok(data),
+        QrCodeOutput::Raster(data, _) => Ok(general_purpose::STANDARD.encode(data)),
         _ => Err(JsValue::from_str("Expected raster output")),
     }
 }

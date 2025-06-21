@@ -3,6 +3,7 @@ import { Disclaimer } from "./Disclaimer";
 import init from "@qrcode/wasm";
 import { QrRenderConfig } from "./types";
 import { SVGQRCode } from "./SVGQRCode";
+import { PNGQRCode } from "./PNGQRCode";
 
 // Feature flags configuration
 const FEATURE_FLAGS = {
@@ -158,6 +159,7 @@ export function QRCodeGenerator() {
         )}
       </div>
       {isInitialized && <SVGQRCode url={url} config={config} />}
+      {isInitialized && <PNGQRCode url={url} config={config} />}
     </div>
   );
 }
