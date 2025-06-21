@@ -32,7 +32,7 @@ export function PNGQRCode({
         config.finderColor,
         config.dataColor,
       );
-      const png = render_qr_png(trimmedUrl, 512, qrConfig);
+      const png = render_qr_png(trimmedUrl, qrConfig);
       setQrCode(png);
     } catch (e) {
       setError("Failed to generate QR code.");

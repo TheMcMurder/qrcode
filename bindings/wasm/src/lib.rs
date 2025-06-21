@@ -2,6 +2,7 @@ use wasm_bindgen::prelude::*;
 use qrcode_core::{
     render_qr_code,
     render_qr_code_svg,
+    generate_qr_matrix,
     RasterFormat,
     QrCodeOutput,
     QrRenderConfig,
@@ -91,8 +92,10 @@ pub fn render_qr_svg(url: &str, config: Option<QrConfig>) -> String {
 
 /// Renders a QR code as PNG and returns the result as a Uint8Array
 #[wasm_bindgen]
-pub fn render_qr_png(url: &str, size: u32, config: Option<QrConfig>) -> Result<String, JsValue> {
+pub fn render_qr_png(url: &str, config: Option<QrConfig>) -> Result<String, JsValue> {
     let qr_config = config.map(|c| convert_config(&c));
+    let matrix = generate_qr_matrix(url);
+    let size = (matrix.len() * 10) as u32;
     let result = render_qr_code(url, qr_config.as_ref(), RasterFormat::Png, size)
         .map_err(|e| JsValue::from_str(&e.to_string()))?;
     
@@ -104,8 +107,10 @@ pub fn render_qr_png(url: &str, size: u32, config: Option<QrConfig>) -> Result<S
 
 /// Renders a QR code as JPEG and returns the result as a Uint8Array
 #[wasm_bindgen]
-pub fn render_qr_jpeg(url: &str, size: u32, config: Option<QrConfig>) -> Result<String, JsValue> {
+pub fn render_qr_jpeg(url: &str, config: Option<QrConfig>) -> Result<String, JsValue> {
     let qr_config = config.map(|c| convert_config(&c));
+    let matrix = generate_qr_matrix(url);
+    let size = (matrix.len() * 10) as u32;
     let result = render_qr_code(url, qr_config.as_ref(), RasterFormat::Jpeg, size)
         .map_err(|e| JsValue::from_str(&e.to_string()))?;
     

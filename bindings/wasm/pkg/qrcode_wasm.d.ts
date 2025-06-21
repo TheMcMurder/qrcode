@@ -8,11 +8,11 @@ export function render_qr_svg(url: string, config?: QrConfig | null): string;
 /**
  * Renders a QR code as PNG and returns the result as a Uint8Array
  */
-export function render_qr_png(url: string, size: number, config?: QrConfig | null): string;
+export function render_qr_png(url: string, config?: QrConfig | null): string;
 /**
  * Renders a QR code as JPEG and returns the result as a Uint8Array
  */
-export function render_qr_jpeg(url: string, size: number, config?: QrConfig | null): string;
+export function render_qr_jpeg(url: string, config?: QrConfig | null): string;
 /**
  * Returns the dimensions of a QR code for a given URL
  */
@@ -30,8 +30,8 @@ export interface InitOutput {
   readonly __wbg_qrconfig_free: (a: number, b: number) => void;
   readonly qrconfig_new: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
   readonly render_qr_svg: (a: number, b: number, c: number) => [number, number];
-  readonly render_qr_png: (a: number, b: number, c: number, d: number) => [number, number, number, number];
-  readonly render_qr_jpeg: (a: number, b: number, c: number, d: number) => [number, number, number, number];
+  readonly render_qr_png: (a: number, b: number, c: number) => [number, number, number, number];
+  readonly render_qr_jpeg: (a: number, b: number, c: number) => [number, number, number, number];
   readonly get_qr_dimensions: (a: number, b: number, c: number) => [number, number];
   readonly __wbindgen_export_0: WebAssembly.Table;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;

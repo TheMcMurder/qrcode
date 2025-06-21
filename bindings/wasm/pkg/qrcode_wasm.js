@@ -132,11 +132,10 @@ function takeFromExternrefTable0(idx) {
 /**
  * Renders a QR code as PNG and returns the result as a Uint8Array
  * @param {string} url
- * @param {number} size
  * @param {QrConfig | null} [config]
  * @returns {string}
  */
-export function render_qr_png(url, size, config) {
+export function render_qr_png(url, config) {
     let deferred4_0;
     let deferred4_1;
     try {
@@ -147,7 +146,7 @@ export function render_qr_png(url, size, config) {
             _assertClass(config, QrConfig);
             ptr1 = config.__destroy_into_raw();
         }
-        const ret = wasm.render_qr_png(ptr0, len0, size, ptr1);
+        const ret = wasm.render_qr_png(ptr0, len0, ptr1);
         var ptr3 = ret[0];
         var len3 = ret[1];
         if (ret[3]) {
@@ -165,11 +164,10 @@ export function render_qr_png(url, size, config) {
 /**
  * Renders a QR code as JPEG and returns the result as a Uint8Array
  * @param {string} url
- * @param {number} size
  * @param {QrConfig | null} [config]
  * @returns {string}
  */
-export function render_qr_jpeg(url, size, config) {
+export function render_qr_jpeg(url, config) {
     let deferred4_0;
     let deferred4_1;
     try {
@@ -180,7 +178,7 @@ export function render_qr_jpeg(url, size, config) {
             _assertClass(config, QrConfig);
             ptr1 = config.__destroy_into_raw();
         }
-        const ret = wasm.render_qr_jpeg(ptr0, len0, size, ptr1);
+        const ret = wasm.render_qr_jpeg(ptr0, len0, ptr1);
         var ptr3 = ret[0];
         var len3 = ret[1];
         if (ret[3]) {

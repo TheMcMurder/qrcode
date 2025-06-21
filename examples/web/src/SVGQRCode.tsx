@@ -44,5 +44,5 @@ export function SVGQRCode({
         <div dangerouslySetInnerHTML={{ __html: qrCode }} />
       </div>
     </>
-  )
+  );
 }
