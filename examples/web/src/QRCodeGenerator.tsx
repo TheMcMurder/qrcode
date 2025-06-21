@@ -64,15 +64,23 @@ function qrReducer(state: QrRenderConfig, action: QrAction): QrRenderConfig {
 
 export function QRCodeGenerator() {
   const [url, setUrl] = useState('https://google.com');
+  const [isInitialized, setIsInitialized] = useState(false);
   const [qrCode, setQrCode] = useState<string>('');
   const [config, dispatch] = useReducer(qrReducer, defaultConfig);
 
   useEffect(() => {
     const initializeWasm = async () => {
       await init();
+      setIsInitialized(true);
     };
     initializeWasm();
   }, []);
+
+  useEffect(() => {
+    if (isInitialized) {
+      handleGenerateQR();
+    }
+  }, [url, config, isInitialized]);
 
   const handleGenerateQR = () => {
     const trimmedUrl = url.trim();
@@ -109,9 +117,6 @@ export function QRCodeGenerator() {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
-        <button id="qr-generate" onClick={handleGenerateQR}>
-          Generate QR Code
-        </button>
       </div>
       <div>
         <h3>Configuration</h3>
