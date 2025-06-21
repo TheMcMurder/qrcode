@@ -25,11 +25,13 @@ Visit the live demo at: [https://themcmurder.github.io/qrcode/](https://themcmur
 ### Setup
 
 1. Install dependencies:
+
    ```bash
    pnpm install
    ```
 
 2. Build WASM bindings:
+
    ```bash
    cd ../../bindings/wasm
    wasm-pack build --target web
@@ -65,6 +67,7 @@ This example is automatically deployed to GitHub Pages via GitHub Actions. The d
 If you need to deploy manually:
 
 1. Build the project:
+
    ```bash
    pnpm run build:gh-pages
    ```
@@ -85,7 +88,7 @@ If you need to deploy manually:
 The example demonstrates various customization options:
 
 - **Finder Shape**: Square, Dot, Rounded, Triangle
-- **Data Shape**: Square, Dot, Rounded, Triangle  
+- **Data Shape**: Square, Dot, Rounded, Triangle
 - **Colors**: Customizable finder and data colors
 - **Input**: URL or text input for QR code generation
 
@@ -96,6 +99,7 @@ The example demonstrates various customization options:
 If you encounter WASM loading issues:
 
 1. Ensure the WASM bindings are built:
+
    ```bash
    cd ../../bindings/wasm
    wasm-pack build --target web
@@ -112,6 +116,7 @@ If you encounter WASM loading issues:
 If the build fails:
 
 1. Clear node_modules and reinstall:
+
    ```bash
    pnpm clean
    pnpm install
@@ -124,4 +129,4 @@ If the build fails:
 
 ## Contributing
 
-This example is part of the larger QR Code Generator project. See the main [README](../../README.md) for contribution guidelines. 
+This example is part of the larger QR Code Generator project. See the main [README](../../README.md) for contribution guidelines.
