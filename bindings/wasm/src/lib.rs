@@ -12,6 +12,17 @@ use qrcode_core::{
     DataStyle
 };
 use base64::{engine::general_purpose, Engine as _};
+use console_log;
+use std::sync::Once;
+
+static INIT_LOGGER: Once = Once::new();
+
+// Initialize console logging for WASM
+fn init_logger() {
+    INIT_LOGGER.call_once(|| {
+        console_log::init_with_level(log::Level::Info).expect("Failed to initialize console logger");
+    });
+}
 
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
@@ -82,6 +93,7 @@ fn convert_config(config: &QrConfig) -> QrRenderConfig {
 /// Renders a QR code as SVG and returns the result as a string
 #[wasm_bindgen]
 pub fn render_qr_svg(url: &str, config: Option<QrConfig>) -> String {
+    init_logger();
     let qr_config = config.map(|c| convert_config(&c));
     let result = render_qr_code_svg(url, qr_config.as_ref());
     match result.data {
@@ -93,6 +105,7 @@ pub fn render_qr_svg(url: &str, config: Option<QrConfig>) -> String {
 /// Renders a QR code as PNG and returns the result as a Uint8Array
 #[wasm_bindgen]
 pub fn render_qr_png(url: &str, config: Option<QrConfig>) -> Result<String, JsValue> {
+    init_logger();
     let qr_config = config.map(|c| convert_config(&c));
     let matrix = generate_qr_matrix(url);
     let size = (matrix.len() * 10) as u32;
@@ -108,6 +121,7 @@ pub fn render_qr_png(url: &str, config: Option<QrConfig>) -> Result<String, JsVa
 /// Renders a QR code as JPEG and returns the result as a Uint8Array
 #[wasm_bindgen]
 pub fn render_qr_jpeg(url: &str, config: Option<QrConfig>) -> Result<String, JsValue> {
+    init_logger();
     let qr_config = config.map(|c| convert_config(&c));
     let matrix = generate_qr_matrix(url);
     let size = (matrix.len() * 10) as u32;
@@ -123,6 +137,7 @@ pub fn render_qr_jpeg(url: &str, config: Option<QrConfig>) -> Result<String, JsV
 /// Returns the dimensions of a QR code for a given URL
 #[wasm_bindgen]
 pub fn get_qr_dimensions(url: &str, config: Option<QrConfig>) -> Vec<u32> {
+    init_logger();
     let qr_config = config.map(|c| convert_config(&c));
     let result = render_qr_code_svg(url, qr_config.as_ref());
     vec![result.width, result.height]

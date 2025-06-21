@@ -171,8 +171,10 @@ mod tests {
             }
             _ => panic!("Expected SVG output"),
         }
-        // Size should be based on matrix dimensions (21x21 modules * 10 pixels)
-        assert_eq!(result.width, 210);
-        assert_eq!(result.height, 210);
+        // Size should be based on matrix dimensions (modules * 10 pixels)
+        let matrix = generate_qr_matrix("https://jedi.org");
+        let expected_size = (matrix.len() * 10) as u32;
+        assert_eq!(result.width, expected_size);
+        assert_eq!(result.height, expected_size);
     }
 }

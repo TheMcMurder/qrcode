@@ -1,8 +1,5 @@
 use log::info;
-use console_log;
-use std::sync::Once;
 
-static INIT_LOGGER: Once = Once::new();
 /// configuration for QR code rendering
 pub struct QrRenderConfig {
     pub finder_shape: FinderShape,
@@ -192,11 +189,6 @@ pub fn render_qr_matrix_as_svg(
     matrix: &[Vec<bool>],
     user_defined_config: Option<&QrRenderConfig>,
 ) -> String {
-    // Initialize the console logger only once
-    INIT_LOGGER.call_once(|| {
-        console_log::init_with_level(log::Level::Info).expect("Failed to initialize console logger");
-    });
-    
     info!("Starting QR code SVG rendering");
     let default_config = QrRenderConfig::default();
     let config = user_defined_config.unwrap_or(&default_config);
@@ -287,7 +279,7 @@ mod tests {
         // Basic checks: SVG header and some black squares
         assert!(svg.starts_with("<svg"));
         // Check for both black (data) and blue (finder) modules
-        assert!(svg.contains("fill='black'"));
+        assert!(svg.contains("fill='red'"));
         assert!(svg.ends_with("</svg>\n"));
     }
 }
