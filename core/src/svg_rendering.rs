@@ -209,7 +209,7 @@ pub fn render_qr_matrix_as_svg(
 
     // SVG header
     svg.push_str(&format!(
-        r#"<svg xmlns='http://www.w3.org/2000/svg' width='{size}' height='{size}' viewBox='0 0 {size} {size}' shape-rendering='crispEdges'>\n"#,
+        r#"<svg xmlns='http://www.w3.org/2000/svg' width='{size}' height='{size}' viewBox='0 0 {size} {size}' shape-rendering='geometricPrecision'>\n"#,
         size = svg_size
     ));
 

@@ -4,7 +4,8 @@ use image::{ImageBuffer, Rgba, imageops};
 use resvg;
 use usvg::{Tree, Options, TreeParsing};
 
-const SUPER_SAMPLING_FACTOR: u32 = 12;
+const SUPER_SAMPLING_FACTOR: u32 = 2;
+const JPEG_QUALITY: u8 = 95;
 
 /// Custom error type for format conversion operations
 #[derive(Error, Debug)]
@@ -121,9 +122,13 @@ pub fn convert_svg_to_format(
                 .map_err(|e| FormatConversionError::ImageEncodeError(e.to_string()))?;
         }
         RasterFormat::Jpeg => {
-            image_buffer
-                .write_to(&mut cursor, image::ImageFormat::Jpeg)
-                .map_err(|e| FormatConversionError::ImageEncodeError(e.to_string()))?;
+            let mut encoder = image::codecs::jpeg::JpegEncoder::new_with_quality(&mut cursor, JPEG_QUALITY);
+            encoder.encode(
+                &image_buffer,
+                image_buffer.width(),
+                image_buffer.height(),
+                image::ColorType::Rgba8,
+            ).map_err(|e| FormatConversionError::ImageEncodeError(e.to_string()))?;
         }
     }
     
