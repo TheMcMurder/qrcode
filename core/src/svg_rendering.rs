@@ -53,7 +53,7 @@ fn render_finder_module(
     // Create a group for the finder pattern
     match shape {
         // The standard finder pattern shape is the same regardless of the configured FinderShape
-        FinderShape::Square | FinderShape::Dot | FinderShape::Rounded | FinderShape::Triangle => {
+        FinderShape::Square | FinderShape::Rounded | FinderShape::Triangle => {
             format!(
                 r#"  <g transform="translate({x}, {y})">
                     <rect width="{outer_bar_width}" height="{outer_bar_thickness}" fill="{color}"/>
@@ -76,6 +76,28 @@ fn render_finder_module(
                 right_bar_y = 1 * module_size,     // Starts at module row 1
                 inner_size = 3 * module_size,      // 3x3 modules for the innermost black square
                 inner_pos = 2 * module_size        // Offset by 2 modules
+            )
+        }
+        FinderShape::Dot => {
+            let center = 3.5 * module_size as f32;
+            let ring_radius = 3.0 * module_size as f32;
+            let ring_stroke_width = 1.0 * module_size as f32;
+            let r_dot = 1.5 * module_size as f32;
+
+            format!(
+                r#"
+                <g transform="translate({x}, {y})">
+                    <circle cx='{center}' cy='{center}' r='{ring_radius}' fill='none' stroke='{color}' stroke-width='{ring_stroke_width}'/>
+                    <circle cx='{center}' cy='{center}' r='{r_dot}' fill='{color}'/>
+                </g>
+                "#,
+                x = x_px,
+                y = y_px,
+                center = center,
+                ring_radius = ring_radius,
+                ring_stroke_width = ring_stroke_width,
+                r_dot = r_dot,
+                color = color,
             )
         }
     }
