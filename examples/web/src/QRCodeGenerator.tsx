@@ -10,8 +10,8 @@ import { JPGQRCode } from "./JPGQRCode";
 const FEATURE_FLAGS = {
   FINDER_SHAPES: {
     Square: true,
-    Dot: true, // Disabled until implemented
-    Rounded: false, // Disabled until implemented
+    Dot: true,
+    Rounded: true,
     Triangle: false, // Disabled until implemented
   },
   DATA_SHAPES: {

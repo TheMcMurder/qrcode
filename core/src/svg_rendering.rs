@@ -53,7 +53,7 @@ fn render_finder_module(
     // Create a group for the finder pattern
     match shape {
         // The standard finder pattern shape is the same regardless of the configured FinderShape
-        FinderShape::Square | FinderShape::Rounded | FinderShape::Triangle => {
+        FinderShape::Square | FinderShape::Triangle => {
             format!(
                 r#"
                     <g transform="translate({x}, {y})">
@@ -99,6 +99,36 @@ fn render_finder_module(
                 ring_stroke_width = ring_stroke_width,
                 r_dot = r_dot,
                 color = color,
+            )
+        }
+        FinderShape::Rounded => {
+            // For finder shape rounded I want to generate a square with rounded off edges. You can think of it as halfway between the square and dot approachs above
+            let frame_offset = 0.5 * module_size as f32;
+            let frame_size = 6.0 * module_size as f32;
+            let frame_stroke_width = 1.0 * module_size as f32;
+            let frame_corner_radius = 2.0 * module_size as f32;
+
+            let dot_offset = 2.0 * module_size as f32;
+            let dot_size = 3.0 * module_size as f32;
+            let dot_corner_radius = 1.0 * module_size as f32;
+
+            format!(
+                r#"
+                    <g transform="translate({x}, {y})">
+                        <rect x='{frame_offset}' y='{frame_offset}' width='{frame_size}' height='{frame_size}' rx='{frame_corner_radius}' ry='{frame_corner_radius}' fill='none' stroke='{color}' stroke-width='{frame_stroke_width}'/>
+                        <rect x='{dot_offset}' y='{dot_offset}' width='{dot_size}' height='{dot_size}' rx='{dot_corner_radius}' ry='{dot_corner_radius}' fill='{color}'/>
+                    </g>
+                "#,
+                x = x_px,
+                y = y_px,
+                color = color,
+                frame_offset = frame_offset,
+                frame_size = frame_size,
+                frame_stroke_width = frame_stroke_width,
+                frame_corner_radius = frame_corner_radius,
+                dot_offset = dot_offset,
+                dot_size = dot_size,
+                dot_corner_radius = dot_corner_radius,
             )
         }
     }
