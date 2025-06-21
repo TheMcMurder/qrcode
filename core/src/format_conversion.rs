@@ -1,8 +1,10 @@
 use std::io::Cursor;
 use thiserror::Error;
-use image::{ImageBuffer, Rgba};
+use image::{ImageBuffer, Rgba, imageops};
 use resvg;
 use usvg::{Tree, Options, TreeParsing};
+
+const SUPER_SAMPLING_FACTOR: u32 = 12;
 
 /// Custom error type for format conversion operations
 #[derive(Error, Debug)]
@@ -44,35 +46,50 @@ pub struct QrCodeResult {
     pub height: u32,
 }
 
-/// Converts an SVG string to a PNG image buffer
+/// Converts an SVG string to a PNG image buffer with super-sampling for antialiasing
 /// 
 /// # Arguments
 /// * `svg_string` - The SVG content as a string
-/// * `size` - The desired output size in pixels
+/// * `size` - The desired final output size in pixels
 /// 
 /// # Returns
-/// * `Result<ImageBuffer<Rgba<u8>, Vec<u8>>>` - The rendered PNG image buffer
-fn svg_to_png(svg_string: &str, size: u32) -> Result<ImageBuffer<Rgba<u8>, Vec<u8>>, FormatConversionError> {
+/// * `Result<ImageBuffer<Rgba<u8>, Vec<u8>>>` - The rendered and down-sampled image buffer
+fn svg_to_image_buffer(svg_string: &str, size: u32) -> Result<ImageBuffer<Rgba<u8>, Vec<u8>>, FormatConversionError> {
     // Parse the SVG string into a usvg Tree
     let tree = Tree::from_str(svg_string, &Options::default())
         .map_err(|e| FormatConversionError::SvgParseError(e.to_string()))?;
     
-    // Create a new image buffer with the specified size
-    let mut pixmap = resvg::tiny_skia::Pixmap::new(size, size)
+    // Determine the size of the super-sampled pixmap
+    let super_sampled_size = size * SUPER_SAMPLING_FACTOR;
+    
+    // Create a new image buffer with the super-sampled size
+    let mut pixmap = resvg::tiny_skia::Pixmap::new(super_sampled_size, super_sampled_size)
         .ok_or_else(|| FormatConversionError::SvgRenderError("Failed to create pixmap".to_string()))?;
     
-    // Convert to resvg Tree and render
+    // Convert to resvg Tree and render at the super-sampled size
     let rtree = resvg::Tree::from_usvg(&tree);
+    let transform = resvg::tiny_skia::Transform::from_scale(
+        SUPER_SAMPLING_FACTOR as f32,
+        SUPER_SAMPLING_FACTOR as f32,
+    );
     rtree.render(
-        resvg::tiny_skia::Transform::identity(),
+        transform,
         &mut pixmap.as_mut()
     );
     
     // Convert the pixmap to an image buffer
-    let image_buffer = ImageBuffer::from_raw(size, size, pixmap.data().to_vec())
+    let super_sampled_buffer = ImageBuffer::from_raw(super_sampled_size, super_sampled_size, pixmap.data().to_vec())
         .ok_or_else(|| FormatConversionError::SvgRenderError("Failed to create image buffer".to_string()))?;
+        
+    // Down-sample the image to the target size with a high-quality filter
+    let final_buffer = imageops::resize(
+        &super_sampled_buffer,
+        size,
+        size,
+        imageops::FilterType::Lanczos3,
+    );
     
-    Ok(image_buffer)
+    Ok(final_buffer)
 }
 
 /// Converts an SVG string to the specified output format
@@ -89,8 +106,8 @@ pub fn convert_svg_to_format(
     format: RasterFormat,
     size: u32,
 ) -> Result<QrCodeResult, FormatConversionError> {
-    // First convert SVG to PNG buffer
-    let image_buffer = svg_to_png(svg_string, size)?;
+    // Convert SVG to a down-sampled image buffer for antialiasing
+    let image_buffer = svg_to_image_buffer(svg_string, size)?;
     
     // Create a buffer to hold the encoded image data
     let mut output_buffer = Vec::new();
