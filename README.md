@@ -10,6 +10,7 @@ A high-performance, cross-platform QR code generator written in Rust with WebAss
 - Enable customization of QR code appearance and properties
 - Maintain high code quality and comprehensive test coverage
 - Offer a simple, intuitive API for developers
+- HAVE FUN! I'm having fun coding. Maybe this will be ready for production one day, right now it's not.
 
 ## Features
 
@@ -20,6 +21,16 @@ A high-performance, cross-platform QR code generator written in Rust with WebAss
 - 🔒 Error correction levels
 - 🧪 Comprehensive test suite
 - 📚 Well-documented API
+
+## WIP Live Demo
+
+Try the web example live: [https://themcmurder.github.io/qrcode/](https://themcmurder.github.io/qrcode/)
+
+The demo showcases:
+- Real-time QR code generation
+- Customizable shapes and colors
+- WebAssembly performance
+- Responsive design
 
 ## Project Structure
 
